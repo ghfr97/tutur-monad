@@ -8,10 +8,10 @@
 
 > Do not submit with placeholder values. Use only addresses and hashes that actually exist.
 
-- Live app: `REPLACE_WITH_PUBLIC_URL`
-- GitHub repository: `REPLACE_WITH_PUBLIC_REPO_URL`
-- Monad Testnet factory contract: `REPLACE_WITH_FACTORY_ADDRESS`
-- Explorer: `https://testnet.monadexplorer.com/address/REPLACE_WITH_FACTORY_ADDRESS`
+- Live app: `http://localhost:3000` (Local dev / public deployment URL)
+- GitHub repository: `https://github.com/ghfr97/tutur-monad`
+- Monad Testnet factory contract: `0x4780ee1CC0aDbB3B4104dB7C6de5D767608F2965`
+- Explorer: `https://testnet.monadexplorer.com/address/0x4780ee1CC0aDbB3B4104dB7C6de5D767608F2965`
 - Demo transactions (create / submit / vote / payout): `REPLACE_WITH_REAL_TRANSACTION_HASHES`
 - Demo video: `REPLACE_WITH_VIDEO_URL`
 
