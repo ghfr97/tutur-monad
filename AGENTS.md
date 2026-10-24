@@ -1,46 +1,47 @@
-# AGENTS.md — Instructions for AI Coding Agents
+# AGENTS.md — TUTUR AI Coding Agent Rules
 
-You are building **TUTUR**, a six-hour Monad Blitz MVP. Read `TUTUR_DEVELOPER_PACK.md` before coding. Follow this file as the operating rules for the repository.
+Read `docs/TUTUR_DEVELOPER_PACK.md` before coding.
 
 ## Mission
-Ship one complete, demonstrable flow:
 
-1. A sponsor creates a language-data bounty and funds it with native testnet MON.
-2. A contributor submits a text contribution and confirms the data-use terms.
-3. Three configured validators vote independently; two matching votes decide the result.
-4. On approval, the contributor receives the reward and the platform treasury receives an 8% service fee. On rejection or expiry, the sponsor receives a refund.
-5. The live web app shows the contract address and real transaction links.
+Build a working six-hour hackathon MVP for TUTUR, a language-data micro-bounty app on Monad Testnet.
 
-## Work rules
+The required demo flow is:
 
-- Inspect the existing repository before changing files. Preserve working code and configuration. If the repository already has a stack, do not replace it without a concrete reason.
-- Read the product spec and follow its P0 scope. Do not add tokenomics, DAO governance, voice recording, mobile apps, complex indexing, or unrelated features before the end-to-end MVP works.
-- Implement incrementally. Keep the app runnable after each substantial change.
-- Prefer a small, understandable implementation over abstractions or dependencies that do not help the demo.
-- Do not fake blockchain success. A mock/demo mode must be clearly labelled and must never be presented as a confirmed on-chain transaction.
-- Never request, print, commit, paste into a prompt, or otherwise expose private keys or seed phrases. Do not create a deployment script that embeds a private key. The human operator creates a burner wallet and signs deployment/transactions themselves.
-- Public chain configuration and deployed contract addresses may be stored in `.env.local`; secrets must not be committed. Commit only `.env.example` with placeholders/public settings.
-- Do not send raw private information, personal data, or voice recordings to the blockchain. The hackathon MVP is text-first and should use sample/non-sensitive language examples.
-- Do not claim that TUTUR's data licensing, quality checks, or market demand are legally or commercially validated. Present them as product hypotheses.
-- Do not invent TPS figures, transaction receipts, users, customer commitments, or revenue. Show measured results only.
-- Add loading, success, and error states for wallet and transaction actions. Show the explorer link only when a real transaction hash exists.
-- Make the visual design deliberate: compact, calm, editorial, language/data-oriented. Avoid generic gradient-heavy Web3 dashboards and fabricated analytics.
+1. Sponsor creates and funds a task with native MON.
+2. Contributor submits a text contribution hash and explicitly acknowledges the task usage terms.
+3. Three configured validators can vote once each.
+4. Two approvals pay the contributor and an 8% platform fee to treasury.
+5. Two rejections or unresolved expiry refund the sponsor.
 
-## Required order of execution
+## Rules
 
-1. Inspect files, available scripts, and existing dependencies.
-2. Summarize the current repository state in a few lines, then proceed without waiting for approval.
-3. Build the smart contracts and tests first enough to lock the interface.
-4. Build the frontend against that interface. Use sample metadata for UI development while contracts are being built.
-5. Run contract tests, frontend lint/typecheck/build, and fix critical failures.
-6. Document the human-operated testnet deployment and hosting steps in README.
-7. Stop adding features when the create → submit → vote → payout/refund path works. Use remaining time for contract verification, deployment, README, and demo rehearsal.
+- Inspect the repository before editing. Preserve working code and dependencies.
+- Implement P0 requirements first; do not add tokens, DAO, NFTs, audio capture, or unrelated features.
+- Do not fake blockchain transactions, addresses, analytics, or success states.
+- Never ask for, print, or commit private keys or seed phrases. Human operators sign deployments using a burner wallet.
+- Raw contribution text must stay off-chain. Only submit a content hash on-chain.
+- Do not invent customer demand, revenue, TPS figures, or legal compliance claims.
+- Show loading, pending, confirmed, and error states. Wait for transaction receipts before reporting success.
+- Keep the app buildable after each substantial change.
+- Prefer local storage for MVP metadata; add Supabase only if the full on-chain flow already works.
+- Use the testnet settings and contract behavior in the developer pack; confirm with organizers if their instructions change.
+
+## Execution order
+
+1. Inspect files and report the current state briefly.
+2. Implement Solidity contracts and tests.
+3. Build frontend pages and wallet connection.
+4. Integrate create → submit → vote → payout/refund.
+5. Run contract tests, lint/typecheck/build checks.
+6. Document human-operated deployment and hosting.
+7. Update README with real addresses and transaction hashes only after deployment.
 
 ## Definition of done
 
-- The factory and escrow contracts compile; tests cover happy path, unauthorized voting, double voting, duplicate submission, wrong payment, rejection/refund, expiry, and fee calculation.
-- The frontend can connect a wallet on Monad Testnet, create a task, submit a contribution hash, vote as a validator, and render the resulting on-chain state.
-- The UI's text metadata can be stored off-chain. If Supabase is not configured, the application must still work for a same-browser demo using local storage and clearly handle missing metadata on another browser.
-- No transaction is marked successful until its receipt is confirmed.
-- `.env.example`, a usable README, public deployment instructions, contract address placeholders, and a three-minute demo checklist exist.
-- The site is buildable and hostable. Testnet deployment and web hosting are performed by the human operator, not by exposing keys to the coding agent.
+- Contract compile and critical tests pass.
+- Real Monad Testnet wallet transactions are supported.
+- UI reflects on-chain state and links to real explorer transactions.
+- No secrets are committed.
+- README and `.env.example` exist.
+- The human operator has clear deployment steps.
