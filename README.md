@@ -11,18 +11,18 @@
 - Metadata: browser local storage for the P0 demo. Metadata is not synchronized across devices.
 - Product and implementation docs: [`PRD.md`](./PRD.md), [`architecture.md`](./architecture.md), [`plan.md`](./plan.md), and [`task.md`](./task.md).
 
-The factory and per-task escrow source and tests already exist. The frontend works against a real factory address once the human operator deploys it and configures the public environment variable.
+The factory and per-task escrow source and tests are included. The configured factory address has bytecode on Monad Testnet. The operator has reported a successful task creation, validator approval, and contributor payout; transaction hashes have not yet been added to this README.
 
 ## Deployment references
 
-Alamat factory di atas diberikan oleh operator dan telah diperiksa memiliki bytecode pada Monad Testnet. RPC juga mengembalikan tiga alamat validator yang dikonfigurasi, fee 800 bps, dan jumlah task 0 saat pemeriksaan. Treasury getter gagal dibaca oleh RPC pada sesi ini, jadi cocokkan treasury melalui explorer atau Remix sebelum mengandalkan konfigurasi tersebut. Transaksi demo/flow penuh belum diverifikasi.
+The operator supplied the factory address below. Its bytecode was found on Monad Testnet, and RPC reads confirmed the three configured validators and 800 bps fee. The treasury getter could not be verified because the RPC returned an error. The operator has since reported that a task was created, two validators approved it, and the contributor received the reward. Add the real transaction hash and task address when available; do not treat this note as an independently verified transaction record.
 
-- Live app: belum tersedia.
+- Live app: not published yet.
 - GitHub repository: `ghfr97/MONAD`.
 - Monad Testnet factory address: `0x2fE03DF63F9815D360C6e3f9bABA0a5dcF8334a5`.
 - Factory explorer: https://testnet.monadexplorer.com/address/0x2fE03DF63F9815D360C6e3f9bABA0a5dcF8334a5
-- Demo transaction: belum tersedia.
-- Demo video: belum tersedia.
+- Demo transaction: not documented yet.
+- Demo video: not published yet.
 
 ## Product flow
 
@@ -80,7 +80,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. Replace `NEXT_PUBLIC_TUTUR_FACTORY_ADDRESS` in `web/.env.local` with a real deployed factory address before using on-chain functions. Restart the dev server after changing environment variables.
+Open `http://localhost:3000`. The root `.env.example` currently contains the supplied factory address. Replace it only if using a different deployment, then copy it into `web/.env.local`. Restart the dev server after changing environment variables.
 
 Frontend checks:
 
@@ -96,7 +96,7 @@ Wallet-sensitive operations below must be performed and signed by the human oper
 
 1. Create a fresh burner wallet for the testnet demo and request MON from the faucet.
 2. Build and test from `contracts` with Foundry.
-3. Deploy `TuturFactory` to Monad Testnet using a human-operated workflow such as Remix or an encrypted Foundry keystore. The provided constructor arguments are:
+3. To deploy a new `TuturFactory`, use a human-operated workflow such as Remix or an encrypted Foundry keystore. The constructor arguments used for the current deployment are:
    - `treasury`: `0x00404e9F055595002Ea668AAFdA12111993190F6`
    - `validator1`: `0x097513cBdCCfbA5253cad3419587983d20000616`
    - `validator2`: `0xCC7968BFBCf01a11B771ff2D4B84b8bf13Aa0c2b`
@@ -104,8 +104,8 @@ Wallet-sensitive operations below must be performed and signed by the human oper
    - `feeBps`: `800` (8%)
 
    The three validator addresses must be controlled by the intended reviewers; the app only checks that they match the validators configured in the deployed contracts. Validators are not paid from the treasury and need testnet MON in their own wallets to submit votes.
-4. Record the actual factory address and verify source on the explorer if available.
-5. Salin root `.env.example` ke `web/.env.local`. Alamat factory saat ini sudah diisikan; jangan masukkan rahasia ke `NEXT_PUBLIC_*`.
+4. The current deployment address was supplied by the operator. Verify its source on the explorer if available; deploying again creates a different factory and does not replace the existing one.
+5. Copy the root `.env.example` to `web/.env.local`. The factory address and public treasury/validator addresses are already filled in. Never put secrets in `NEXT_PUBLIC_*`.
 6. Run the frontend locally and test create → submit → two validator votes → payout. Test rejection/refund or expiry as well.
 7. Host the `web` application using the team's hosting provider. Configure the same public environment variables in that provider and rebuild.
 8. Verify the public URL, factory address, and transaction links. Show explorer links only for real transaction hashes.
