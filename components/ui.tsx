@@ -8,6 +8,8 @@ import type { TxState } from "@/lib/useTx";
 import type { StatusName } from "@/lib/tasks";
 import { monadTestnet } from "@/lib/chain";
 import { formatEther } from "viem";
+import { useLanguage } from "@/lib/i18n-context";
+import { LanguageToggle } from "@/components/language-toggle";
 
 export function Mon({ v }: { v: bigint }) {
   return <span>{formatEther(v)} MON</span>;
@@ -70,20 +72,21 @@ export function TxPanel({ state, success }: { state: TxState; success?: ReactNod
 /** Wallet connect / network guard used above any action form. */
 export function WalletGate({ children }: { children: ReactNode }) {
   const w = useWallet();
+  const { t } = useLanguage();
   if (!w.hasProvider)
-    return <div className="card p-4 text-sm">No browser wallet detected. Install MetaMask (or a compatible wallet) to interact.</div>;
+    return <div className="card p-4 text-sm">{t.walletGate.noProvider}</div>;
   if (!w.account)
     return (
       <div className="card flex items-center justify-between gap-4 p-4 text-sm">
-        <span>Connect a burner wallet to continue.</span>
-        <button className="btn btn-accent" onClick={w.connect}>Connect wallet</button>
+        <span>{t.walletGate.connectPrompt}</span>
+        <button className="btn btn-accent" onClick={w.connect}>{t.walletGate.connectBtn}</button>
       </div>
     );
   if (w.wrongNetwork)
     return (
       <div className="card flex items-center justify-between gap-4 border-bad p-4 text-sm">
-        <span>Wrong network. TUTUR runs on {monadTestnet.name} (chain {monadTestnet.id}).</span>
-        <button className="btn btn-accent" onClick={w.switchNetwork}>Switch network</button>
+        <span>{t.walletGate.wrongNetwork.replace("{name}", monadTestnet.name).replace("{id}", String(monadTestnet.id))}</span>
+        <button className="btn btn-accent" onClick={w.switchNetwork}>{t.walletGate.switchBtn}</button>
       </div>
     );
   return <>{children}</>;
@@ -91,38 +94,50 @@ export function WalletGate({ children }: { children: ReactNode }) {
 
 export function Nav() {
   const w = useWallet();
-  const link = "px-2 py-1 text-sm hover:text-accent";
+  const { t } = useLanguage();
+  const link = "px-2 py-1 text-sm hover:text-accent transition-colors";
   return (
     <header className="border-b border-rule">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <Link href="/" className="font-serif text-2xl font-bold tracking-tight">
           TUTUR<span className="text-accent">.</span>
         </Link>
-        <nav className="flex flex-wrap items-center gap-1">
-          <Link className={link} href="/tasks">Tasks</Link>
-          <Link className={link} href="/tasks/new">Create task</Link>
-          <Link className={link} href="/about">About</Link>
-          <span className="ml-2 rounded-sm border border-warn px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-warn">
-            Monad Testnet · test MON only
-          </span>
-          {w.account ? (
-            <span className="mono ml-2 rounded border border-rule px-2 py-1">{shorten(w.account)}</span>
-          ) : (
-            <button className="btn ml-2" onClick={w.connect}>Connect</button>
-          )}
-        </nav>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <nav className="flex flex-wrap items-center gap-1">
+            <Link className={link} href="/tasks">{t.nav.tasks}</Link>
+            <Link className={link} href="/tasks/new">{t.nav.createTask}</Link>
+            <Link className={link} href="/about">{t.nav.about}</Link>
+            <span className="ml-2 hidden rounded-sm border border-warn px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-warn sm:inline-block">
+              {t.nav.monadNotice}
+            </span>
+            {w.account ? (
+              <span className="mono ml-2 rounded border border-rule px-2 py-1">{shorten(w.account)}</span>
+            ) : (
+              <button className="btn ml-2" onClick={w.connect}>{t.nav.connect}</button>
+            )}
+          </nav>
+          <LanguageToggle />
+        </div>
       </div>
       {w.error && <div className="mx-auto max-w-5xl px-4 pb-2 text-sm text-bad" role="alert">{w.error}</div>}
     </header>
   );
 }
 
+export function Footer() {
+  const { t } = useLanguage();
+  return (
+    <footer className="mx-auto max-w-5xl border-t border-rule px-4 py-6 text-xs text-soft">
+      {t.footer.notice}
+    </footer>
+  );
+}
+
 export function NoFactory() {
+  const { t } = useLanguage();
   return (
     <div className="card border-warn p-4 text-sm">
-      <strong>Factory address not configured.</strong> Deploy <span className="mono">TuturFactory</span> to Monad Testnet and set{" "}
-      <span className="mono">NEXT_PUBLIC_TUTUR_FACTORY_ADDRESS</span> in <span className="mono">.env.local</span> (see README).
-      No tasks can be shown until then; nothing here is simulated.
+      <strong>{t.factory.notConfiguredTitle}</strong> {t.factory.notConfigured}
     </div>
   );
 }
