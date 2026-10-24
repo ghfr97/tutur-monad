@@ -1,0 +1,7 @@
+.env.local
+/contracts/cache/
+/contracts/out/
+**/node_modules/
+web/.next/
+web/out/
+web/.vercel/
